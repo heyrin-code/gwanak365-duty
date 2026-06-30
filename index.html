@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>관악365치과 근무표</title>
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0969e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="근무표">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <style>
+    :root{--ink:#17233a;--muted:#64748b;--line:#dbe6f3;--blue:#0969e8;--blue-2:#eaf4ff;--sky:#f5faff;--coral:#f05252;--white:#fff;--shadow:0 18px 50px rgba(31,86,145,.12)}
+    *{box-sizing:border-box} body{margin:0;color:var(--ink);background:#f7fbff;font-family:Pretendard,"Noto Sans KR",system-ui,-apple-system,sans-serif;line-height:1.45}
+    button,input{font:inherit} button{cursor:pointer}.app{min-height:100vh}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,4vw,64px);position:sticky;top:0;z-index:20}.brand{font-size:20px;font-weight:800;letter-spacing:-.03em}.brand small{display:block;font-size:11px;color:var(--blue);letter-spacing:.04em;margin-top:1px}.actions{display:flex;gap:8px;align-items:center}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;border-radius:10px;font-weight:700}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.icon{padding:9px 11px}.main{max-width:1480px;margin:auto;padding:28px clamp(18px,3vw,44px) 56px}.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.month-nav{display:flex;align-items:center;gap:14px}.month-nav h1{font-size:22px;margin:0;letter-spacing:-.04em}.status{font-size:13px;color:var(--muted)}
+    .today-shell{display:block}.today{background:linear-gradient(135deg,#f6fbff,#eaf5ff);border:1px solid #cfe4fb;border-radius:18px;padding:24px}.today h2{font-size:24px;margin:0 0 18px;letter-spacing:-.04em}.today h2 strong{color:var(--blue)}.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.count{background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px}.count-label{font-size:13px;color:var(--muted);font-weight:700}.count strong{display:flex;align-items:baseline;flex-wrap:wrap;font-size:27px;line-height:1.2;margin-top:4px}.count strong span{font-size:13px;margin-left:3px}.count-note{color:#1473d2;font-size:13px!important;font-weight:700;margin-left:8px!important}.roster-title{font-size:16px;margin:22px 0 10px}.rosters{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.roster{min-height:108px;background:rgba(255,255,255,.78);border:1px solid var(--line);border-radius:11px;padding:14px}.roster h3{font-size:13px;margin:0 0 9px}.names{display:flex;flex-wrap:wrap;gap:7px 15px;font-size:15px;font-weight:600}.person{white-space:nowrap}.empty{font-size:13px;color:#94a3b8;font-weight:400}
+    .schedule{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}.week-controls{display:flex;align-items:center;justify-content:center;gap:14px;padding:12px;background:#f7fbff;border-bottom:1px solid var(--line)}.week-controls span{font-size:14px;font-weight:800;color:#334b68}.week-arrow{width:42px;height:38px;border:2px solid #88bdf7;border-radius:10px;background:#fff;color:var(--blue);font-size:27px;font-weight:800;line-height:28px;box-shadow:0 4px 12px rgba(9,105,232,.12)}.week-arrow:hover{background:var(--blue);border-color:var(--blue);color:#fff}.week-head,.week-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.week-head{border-bottom:1px solid var(--line)}.day-tab{padding:16px 8px;text-align:center;font-weight:800;border-right:1px solid var(--line);font-size:14px}.day-tab:last-child{border-right:0}.day-tab.selected{background:var(--blue);color:#fff}.day-tab.sat{color:#1672dd}.day-tab.sun{color:var(--coral)}.day-tab.selected{color:#fff}.day{min-width:0;border-right:1px solid var(--line);padding:0}.day:last-child{border-right:0}.day.selected{box-shadow:inset 0 0 0 2px #68a9ff}.role-row{display:grid;grid-template-columns:68px 1fr;gap:6px;padding:12px 10px;border-bottom:1px solid #edf2f7;min-height:61px;font-size:14px}.role-row:last-child{border:0}.role-label{font-size:13px;font-weight:800;color:#174c96}.role-row[data-role="관리자"] .role-label{color:#6c42c8}.role-row[data-role="CS팀"] .role-label{color:#009896}.role-row[data-role="진료팀"] .role-label{color:#3c9b25}.role-row[data-role="파트타임"] .role-label{color:#d35a36}.role-row[data-role="연차"] .role-label{color:var(--coral)}.role-names{display:flex;flex-direction:column;gap:6px;min-width:0;font-weight:600}.info{margin-top:18px;border:1px solid #b7d8ff;background:#f0f7ff;color:#34506f;border-radius:12px;padding:13px 16px;font-size:12px}
+    .drop{position:fixed;inset:0;background:rgba(15,28,48,.46);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.drop.open{display:flex}.dialog{background:#fff;border-radius:20px;padding:26px;width:min(520px,100%);box-shadow:var(--shadow)}.dialog h2{margin:0;font-size:21px}.dialog p{color:var(--muted);font-size:13px;margin:8px 0 0}.drop-zone{margin:18px 0;border:2px dashed #93bce9;background:#f4f9ff;border-radius:15px;padding:34px;text-align:center;transition:.2s}.drop-zone.drag{background:#e3f1ff;border-color:var(--blue)}.drop-zone input{display:none}.drop-zone label{display:inline-block;color:var(--blue);font-weight:800;cursor:pointer}.dialog-actions{display:flex;justify-content:flex-end;gap:8px}.toast{position:fixed;right:24px;bottom:24px;background:#14233d;color:#fff;border-radius:11px;padding:13px 16px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s;z-index:80;font-size:13px}.toast.show{opacity:1;transform:none}
+    @media(max-width:900px){.topbar{height:64px}.brand{font-size:17px}.actions .secondary{display:none}.main{padding-top:18px}.toolbar{align-items:flex-start}.status{display:none}.today{padding:18px}.today h2{font-size:21px}.counts{grid-template-columns:repeat(3,1fr)}.count{padding:13px;min-width:0}.rosters{grid-template-columns:repeat(3,1fr)}.schedule{overflow-x:auto}.week-head,.week-grid{min-width:1080px}.info{margin-bottom:20px}}
+    @media(max-width:560px){.topbar{padding:0 16px}.brand small{display:none}.btn.primary{font-size:0;padding:10px 12px}.btn.primary:after{content:'업로드';font-size:13px}.main{padding-inline:12px}.toolbar{margin-bottom:12px}.month-nav{gap:6px}.month-nav h1{font-size:19px}.today{border-radius:14px}.counts{grid-template-columns:repeat(2,1fr)}.rosters{grid-template-columns:1fr}.roster{min-height:0}.today-shell{gap:10px}.week-head,.week-grid{min-width:920px}.day-tab{padding:13px 6px}.role-row{grid-template-columns:55px 1fr;padding:9px 7px}.toast{left:14px;right:14px;bottom:14px}}
+    .week-controls{position:sticky;left:0;right:0;z-index:8;width:100%;box-shadow:0 5px 14px rgba(36,83,130,.1)}
+    .footer{padding:28px 12px 4px;text-align:center;color:#a2afbf;font-size:13px;font-weight:300;letter-spacing:.04em}
+    .roster .names{justify-content:center;text-align:center}
+    .count{min-height:126px}.count-people{display:flex;flex-wrap:wrap;gap:5px 13px;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid rgba(157,190,224,.55);color:#31445d;font-size:15px;font-weight:600;line-height:1.45}.count-people .empty{font-size:13px;font-weight:400}.roster-title,.rosters{display:none}
+    .today-heading{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px}.today-heading h2{margin:0}.day-arrow{flex:0 0 auto;width:38px;height:38px;border:1px solid #9cc7f4;border-radius:10px;background:#fff;color:var(--blue);font-size:25px;font-weight:800;line-height:30px;box-shadow:0 4px 12px rgba(9,105,232,.1)}.day-arrow:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+    .btn.clear{font-size:12px;padding:6px 10px;border-color:#fad0d0;color:#c94242;font-weight:600}.btn.clear:hover{background:#fff5f5}
+    .status-bar{display:flex;align-items:center;gap:8px}
+    /* GitHub 설정 다이얼로그 */
+    .gh-field{margin-top:14px}.gh-field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}.gh-field input{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;outline:none}.gh-field input:focus{border-color:var(--blue)}.gh-tip{font-size:11px;color:var(--muted);margin-top:5px}
+    .gh-status{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:5px 10px;border-radius:8px;border:1px solid}.gh-status.ok{color:#1a7f3c;background:#e6f4ec;border-color:#b7e2c7}.gh-status.none{color:#64748b;background:#f1f5f9;border-color:#dbe6f3}
+    .btn.gh{border-color:#22c55e;color:#16a34a;font-size:13px;padding:8px 12px}.btn.gh:hover{background:#f0fdf4}.btn.gh.active{background:#16a34a;border-color:#16a34a;color:#fff}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">관악365치과 근무표<small>WORK SCHEDULE</small></div>
+    <div class="actions">
+      <button class="btn secondary" id="demoBtn">샘플 보기</button>
+      <button class="btn gh" id="ghBtn" title="GitHub 알림 설정">🔔 알림 설정</button>
+      <button class="btn primary" id="openUpload">⇧ 엑셀 업로드</button>
+    </div>
+  </header>
+  <main class="main">
+    <div class="toolbar">
+      <div class="month-nav">
+        <button class="btn icon" id="prevMonth" aria-label="이전 달">‹</button>
+        <h1 id="monthTitle">2026년 7월</h1>
+        <button class="btn icon" id="nextMonth" aria-label="다음 달">›</button>
+      </div>
+      <div class="status-bar">
+        <div class="status" id="fileStatus">샘플 데이터 표시 중</div>
+        <button class="btn clear" id="clearBtn" style="display:none">초기화</button>
+      </div>
+    </div>
+    <section class="today-shell">
+      <div class="today">
+        <div class="today-heading">
+          <button class="day-arrow" id="prevDay" aria-label="어제 일정">‹</button>
+          <h2 id="todayTitle">오늘, <strong>7월 10일</strong> 목요일</h2>
+          <button class="day-arrow" id="nextDay" aria-label="내일 일정">›</button>
+        </div>
+        <div class="counts" id="counts"></div>
+        <h3 class="roster-title">오늘 근무자 명단</h3>
+        <div class="rosters" id="rosters"></div>
+      </div>
+    </section>
+    <section class="schedule">
+      <div class="week-controls">
+        <button class="week-arrow" id="prevWeek" aria-label="이전 주">‹</button>
+        <span>주간 일정</span>
+        <button class="week-arrow" id="nextWeek" aria-label="다음 주">›</button>
+      </div>
+      <div class="week-head" id="weekHead"></div>
+      <div class="week-grid" id="weekGrid"></div>
+    </section>
+    <div class="info">ⓘ 엑셀 파일을 업로드하면 날짜·직군·이름과 행 구조를 분석해 근무표로 변환합니다. 업로드한 데이터는 이 기기에 자동 저장되어 다음에 열어도 유지됩니다. GitHub 알림 설정 시 엑셀 업로드마다 GitHub에도 자동 동기화됩니다.</div>
+    <footer class="footer">© Created by Heyrin</footer>
+  </main>
+</div>
+
+<!-- 엑셀 업로드 다이얼로그 -->
+<div class="drop" id="uploadDialog" role="dialog" aria-modal="true" aria-labelledby="uploadTitle">
+  <div class="dialog">
+    <h2 id="uploadTitle">듀티표 엑셀 업로드</h2>
+    <p>.xlsx 또는 .xls 파일을 선택하세요. 파일은 서버로 전송되지 않고 이 브라우저에서만 처리됩니다.</p>
+    <div class="drop-zone" id="dropZone">
+      <div style="font-size:30px">⇧</div>
+      <strong>파일을 이곳에 끌어 놓거나</strong><br>
+      <label for="fileInput">내 컴퓨터에서 선택</label>
+      <input id="fileInput" type="file" accept=".xlsx,.xls">
+    </div>
+    <div class="dialog-actions">
+      <button class="btn" id="closeUpload">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- GitHub 알림 설정 다이얼로그 -->
+<div class="drop" id="ghDialog" role="dialog" aria-modal="true">
+  <div class="dialog">
+    <h2>🔔 GitHub 알림 설정</h2>
+    <p>매일 오후 12시 30분에 내일 출근 여부와 날씨를 알림으로 보내드려요.</p>
+
+    <div class="gh-field">
+      <label>GitHub 사용자명</label>
+      <input id="ghUser" placeholder="예: heyrin" autocomplete="off">
+    </div>
+    <div class="gh-field">
+      <label>저장소 이름</label>
+      <input id="ghRepo" placeholder="예: gwanak365-duty" autocomplete="off">
+    </div>
+    <div class="gh-field">
+      <label>Personal Access Token</label>
+      <input id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+      <div class="gh-tip">GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens<br>권한: Contents (Read and write)</div>
+    </div>
+
+    <div style="margin-top:16px;padding:14px;background:#f8faff;border:1px solid var(--line);border-radius:12px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px">연결 상태</div>
+      <div id="ghStatusBadge" class="gh-status none">⚪ 미설정</div>
+    </div>
+
+    <div class="dialog-actions" style="margin-top:18px">
+      <button class="btn" id="closeGh">닫기</button>
+      <button class="btn" id="testGh">연결 테스트</button>
+      <button class="btn primary" id="saveGh">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ROLES=['Dr','관리자','CS팀','진료팀','파트타임','연차'];
+const SCHEDULE_YEAR=2026;
+const PARTTIME_NAMES=new Set(['제미림','김아영','저미림']);
+const STAFF_ORDER=['김고우리','최엄지','이채연','여주경','이예원','저미림','김아영'];
+const names={Dr:['김용완','신보경'],관리자:['정다예'],CS팀:['김미라','박세희','이민정'],진료팀:['김고우리','최엄지','이채연','여주경','이예원'],파트타임:['저미림','김아영']};
+let baseDate=new Date(SCHEDULE_YEAR,6,2),selectedDate=new Date(SCHEDULE_YEAR,6,2),data=[];
+const STORAGE_KEY='gwanak365_duty_v1';
+const GH_CONFIG_KEY='gwanak365_gh_config';
+
+function key(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function demoData(){data=[];for(let i=1;i<=31;i++){const d=new Date(SCHEDULE_YEAR,6,i);data.push({date:key(d),roles:{Dr:[...names.Dr],관리자:[...names.관리자],CS팀:[...names.CS팀],진료팀:[...names.진료팀],파트타임:[...names.파트타임],연차:[]},counts:{진료팀:5},notes:{진료팀:''}})}render()}
+function recordFor(d){return data.find(x=>x.date===key(d))||{date:key(d),roles:Object.fromEntries(ROLES.map(r=>[r,[]])),counts:{진료팀:null},notes:{진료팀:''}}}
+function roleLabel(role){return role}
+function fmt(d){return `${d.getMonth()+1}월 ${d.getDate()}일`}
+function weekday(d){return ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'][d.getDay()]}
+function render(){document.getElementById('monthTitle').textContent=`${baseDate.getFullYear()}년 ${baseDate.getMonth()+1}월`;const rec=recordFor(selectedDate);document.getElementById('todayTitle').innerHTML=`오늘, <strong>${fmt(selectedDate)}</strong> ${weekday(selectedDate)}`;document.getElementById('counts').innerHTML=ROLES.map(r=>{const count=r==='진료팀'&&rec.counts?.진료팀!=null?rec.counts.진료팀:(rec.roles[r]?.length||0);return `<div class="count"><div class="count-label">${roleLabel(r)}</div><strong>${count}<span>명</span>${r==='진료팀'&&rec.notes?.진료팀?`<span class="count-note">(${escapeHtml(rec.notes.진료팀)})</span>`:''}</strong><div class="count-people">${people(rec.roles[r])||'<span class="empty">근무자 없음</span>'}</div></div>`}).join('');document.getElementById('rosters').innerHTML='';renderWeek()}
+function displayName(name){return String(name).replace(/^아영(?=\s*\(|$)/,'김아영')}
+function staffRank(name){const base=displayName(name).replace(/\s*[（(].*$/,'');const i=STAFF_ORDER.indexOf(base);return i<0?999:i}
+function people(list=[]){return [...list].sort((a,b)=>staffRank(a)-staffRank(b)).map(n=>`<span class="person">${escapeHtml(displayName(n))}</span>`).join('')}
+function renderWeek(){const start=new Date(selectedDate);start.setDate(start.getDate()-((start.getDay()+6)%7));const days=Array.from({length:7},(_,i)=>{const d=new Date(start);d.setDate(d.getDate()+i);return d});document.getElementById('weekHead').innerHTML=days.map(d=>`<div class="day-tab ${key(d)===key(selectedDate)?'selected':''} ${d.getDay()===6?'sat':''} ${d.getDay()===0?'sun':''}" data-date="${key(d)}">${d.getMonth()+1}월 ${d.getDate()}일 (${weekday(d)[0]})</div>`).join('');document.getElementById('weekGrid').innerHTML=days.map(d=>{const rec=recordFor(d);return `<article class="day ${key(d)===key(selectedDate)?'selected':''}">${ROLES.map(r=>`<div class="role-row" data-role="${r}"><div class="role-label">${roleLabel(r)}</div><div class="role-names">${people(rec.roles[r],r)||'<span class="empty">—</span>'}</div></div>`).join('')}</article>`}).join('');document.querySelectorAll('.day-tab').forEach(x=>x.onclick=()=>{selectedDate=parseKey(x.dataset.date);baseDate=new Date(selectedDate);render()});document.getElementById('prevWeek').onclick=()=>shiftDay(-7);document.getElementById('nextWeek').onclick=()=>shiftDay(7)}
+function shiftDay(n){selectedDate.setDate(selectedDate.getDate()+n);baseDate=new Date(selectedDate);render()}
+function parseKey(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function toast(msg,dur=3000){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),dur)}
+function normalizeRole(v){v=String(v||'').replace(/\s/g,'').toLowerCase();if(v==='dr'||v.includes('의사'))return'Dr';if(v.includes('관리'))return'관리자';if(v.includes('cs'))return'CS팀';if(v.includes('진료'))return'진료팀';if(v.includes('알바')||v.includes('파트타임'))return'파트타임';if(v.includes('연차'))return'연차';return null}
+function isSectionBoundary(v){return /리프레쉬|리콜|상담자|성장직|진도당|성장률|진도율/.test(String(v||'').replace(/\s/g,''))}
+function isInactiveCell(cell){const inactiveStyles=new Set([7,8,9,10,15,18,19,20,23,25,30,33,34,35,75,76,77]);if(typeof cell?.s==='number')return inactiveStyles.has(cell.s);const color=cell?.s?.font?.color||cell?.s?.color;let rgb=typeof color==='string'?color:(color?.rgb||'');rgb=String(rgb).replace(/^FF/i,'').toUpperCase();if(!/^[0-9A-F]{6}$/.test(rgb))return false;const n=parseInt(rgb,16),r=n>>16,g=(n>>8)&255,b=n&255;return Math.max(r,g,b)-Math.min(r,g,b)<18&&(r+g+b)/3>=175}
+function excelJsText(cell){const v=cell?.value;if(v==null)return'';if(v instanceof Date)return v;if(typeof v==='object'){if(Array.isArray(v.richText))return v.richText.map(x=>x.text||'').join('');if(v.text!=null)return String(v.text);if(v.result!=null)return String(v.result);if(v.formula!=null)return String(v.result??'')}return String(v)}
+function isGrayExcelCell(cell){const argb=String(cell?.font?.color?.argb||'').replace(/^FF/i,'').toUpperCase();if(!/^[0-9A-F]{6}$/.test(argb))return false;const n=parseInt(argb,16),r=n>>16,g=(n>>8)&255,b=n&255;return Math.max(r,g,b)-Math.min(r,g,b)<22&&(r+g+b)/3>=155}
+async function parseExcelJs(buffer){
+  const wb=new ExcelJS.Workbook();await wb.xlsx.load(buffer);const ws=wb.worksheets[0],dates=[],out=new Map();
+  for(let R=1;R<=ws.rowCount;R++)for(let C=1;C<=ws.columnCount;C++){const cell=ws.getCell(R,C);if(cell.isMerged&&cell.master&&cell.address!==cell.master.address)continue;const raw=excelJsText(cell),d=raw instanceof Date?raw:excelDate({v:raw});if(d&&d.getFullYear()>2020&&d.getFullYear()<2100)dates.push({r:R,c:C,end:C,date:d})}
+  if(!dates.length)throw new Error('날짜 셀을 찾지 못했습니다.');
+  dates.forEach(region=>{const next=dates.filter(x=>x.r===region.r&&x.c>region.c).sort((a,b)=>a.c-b.c)[0];region.end=next?next.c-1:Math.min(ws.columnCount,region.c+3)});
+  const roleAtRow={},explicitRoleRows={};let activeRole=null;
+  for(let R=1;R<=ws.rowCount;R++){for(let C=1;C<=Math.min(ws.columnCount,5);C++){const raw=excelJsText(ws.getCell(R,C)),rr=normalizeRole(raw);if(rr){activeRole=rr;explicitRoleRows[R]=rr;break}if(isSectionBoundary(raw)){activeRole=null;explicitRoleRows[R]='__ignore';break}}roleAtRow[R]=activeRole}
+  Object.entries(explicitRoleRows).forEach(([row,role])=>{const R=Number(row);if(role==='연차'&&R>1)roleAtRow[R-1]='파트타임'});
+  dates.forEach(region=>{const nextHeader=dates.filter(x=>x.c<=region.end&&x.end>=region.c&&x.r>region.r).sort((a,b)=>a.r-b.r)[0],lastRow=nextHeader?nextHeader.r-1:ws.rowCount,k=key(region.date);if(!out.has(k))out.set(k,{date:k,roles:Object.fromEntries(ROLES.map(r=>[r,[]])),counts:{진료팀:null},notes:{진료팀:''}});const rec=out.get(k);
+    for(let R=region.r+1;R<=lastRow;R++){const role=roleAtRow[R];if(!role)continue;for(let C=region.c;C<=region.end;C++){const cell=ws.getCell(R,C),raw=excelJsText(cell),v=String(raw??'').trim(),note=v.match(/^\s*(\d+(?:\.\d+)?)\s*[\(（]([^\)）]+)[\)）]/),plainCount=v.match(/^\d+(?:\.\d+)?$/);if(note){rec.counts.진료팀=Number(note[1]);rec.notes.진료팀=note[2].replace(/진료실|진료팀/g,'').replace(/\s+/g,' ').trim().replace(/([가-힣])백업$/,'$1 백업');continue}if(role==='진료팀'&&explicitRoleRows[R]==='진료팀'&&plainCount){rec.counts.진료팀=Number(v);continue}if(!v||isGrayExcelCell(cell)||normalizeRole(v)||excelDate({v})||/^[월화수목금토일]$/.test(v)||plainCount||['O','X'].includes(v.toUpperCase())||v.length>12||/공휴일|공지|진료팀색상|성장|리콜|연차|휴무/.test(v))continue;const targetRole=PARTTIME_NAMES.has(v)?'파트타임':role;if(!rec.roles[targetRole].includes(v))rec.roles[targetRole].push(v)}}
+  });
+  const arr=[...out.values()].filter(x=>ROLES.some(r=>x.roles[r].length)||x.counts.진료팀!=null);if(!arr.length)throw new Error('직군별 근무자를 찾지 못했습니다.');return arr.sort((a,b)=>a.date.localeCompare(b.date))
+}
+function excelDate(cell){if(!cell)return null;if(cell.t==='d'){const d=new Date(cell.v);return new Date(SCHEDULE_YEAR,d.getMonth(),d.getDate())}if(typeof cell.v==='number'&&cell.v>30000){const o=XLSX.SSF.parse_date_code(cell.v);return o&&new Date(SCHEDULE_YEAR,o.m-1,o.d)}const s=String(cell.w||cell.v||'');let m=s.match(/(?:(20\d{2})[.년\/-]\s*)?(\d{1,2})[.월\/-]\s*(\d{1,2})/);if(!m)return null;return new Date(SCHEDULE_YEAR,Number(m[2])-1,Number(m[3]))}
+function parseWorkbook(wb){
+  const ws=wb.Sheets[wb.SheetNames[0]],range=XLSX.utils.decode_range(ws['!ref']||'A1:A1'),merges=ws['!merges']||[],out=new Map(),dates=[];
+  for(let R=range.s.r;R<=range.e.r;R++)for(let C=range.s.c;C<=range.e.c;C++){const cell=ws[XLSX.utils.encode_cell({r:R,c:C})],d=excelDate(cell);if(!d||d.getFullYear()<2020||d.getFullYear()>2100)continue;const m=merges.find(x=>x.s.r===R&&x.s.c===C);dates.push({r:R,c:C,end:m?m.e.c:C,date:d})}
+  if(!dates.length)throw new Error('날짜 셀을 찾지 못했습니다.');
+  dates.forEach(region=>{if(region.end===region.c){const next=dates.filter(x=>x.r===region.r&&x.c>region.c).sort((a,b)=>a.c-b.c)[0];region.end=next?next.c-1:Math.min(range.e.c,region.c+5)}});
+  const roleAtRow={},explicitRoleRows={};let activeRole=null;for(let R=range.s.r;R<=range.e.r;R++){for(let C=range.s.c;C<=Math.min(range.e.c,4);C++){const raw=ws[XLSX.utils.encode_cell({r:R,c:C})]?.v,rr=normalizeRole(raw);if(rr){activeRole=rr;explicitRoleRows[R]=rr;break}if(isSectionBoundary(raw)){activeRole=null;explicitRoleRows[R]='__ignore';break}}roleAtRow[R]=activeRole}
+  Object.entries(explicitRoleRows).forEach(([row,role])=>{const R=Number(row);if(role==='연차'&&R>range.s.r)roleAtRow[R-1]='파트타임'});
+  dates.forEach(region=>{const nextHeader=dates.filter(x=>x.c<=region.end&&x.end>=region.c&&x.r>region.r).sort((a,b)=>a.r-b.r)[0],lastRow=nextHeader?nextHeader.r-1:range.e.r,k=key(region.date);if(!out.has(k))out.set(k,{date:k,roles:Object.fromEntries(ROLES.map(r=>[r,[]])),counts:{진료팀:null},notes:{진료팀:''}});const rec=out.get(k);
+    for(let R=region.r+1;R<=lastRow;R++){const role=roleAtRow[R];if(!role)continue;for(let C=region.c;C<=region.end;C++){const cell=ws[XLSX.utils.encode_cell({r:R,c:C})],v=String(cell?.v||'').trim(),note=v.match(/^\s*(\d+(?:\.\d+)?)\s*[\(（]([^\)）]+)[\)）]/),plainCount=v.match(/^\d+(?:\.\d+)?$/);if(note){rec.counts.진료팀=Number(note[1]);rec.notes.진료팀=note[2].replace(/진료실|진료팀/g,'').replace(/\s+/g,' ').trim().replace(/([가-힣])백업$/,'$1 백업');continue}if(role==='진료팀'&&explicitRoleRows[R]==='진료팀'&&plainCount){rec.counts.진료팀=Number(v);continue}if(!v||isInactiveCell(cell)||normalizeRole(v)||excelDate(cell)||/^[월화수목금토일]$/.test(v)||plainCount||['O','X'].includes(v.toUpperCase())||v.length>12||/공휴일|공지|진료팀색상|성장|리콜|연차|휴무/.test(v))continue;const targetRole=PARTTIME_NAMES.has(v)?'파트타임':role;if(!rec.roles[targetRole].includes(v))rec.roles[targetRole].push(v)}}
+  });
+  const arr=[...out.values()].filter(x=>ROLES.some(r=>x.roles[r].length));if(!arr.length)throw new Error('직군별 근무자를 찾지 못했습니다.');return arr.sort((a,b)=>a.date.localeCompare(b.date))
+}
+
+/* ── localStorage ── */
+function saveToStorage(fileName){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({data,fileName,savedAt:Date.now()}))}catch(e){}}
+function showClearBtn(show){document.getElementById('clearBtn').style.display=show?'':'none'}
+
+/* ── GitHub API ── */
+function ghConfig(){try{return JSON.parse(localStorage.getItem(GH_CONFIG_KEY)||'{}')}catch(e){return{}}}
+function ghHeaders(cfg){return{Authorization:`token ${cfg.token}`,'Content-Type':'application/json'}}
+
+async function ghSyncSchedule(cfg){
+  if(!cfg.token||!cfg.user||!cfg.repo)return;
+  const path=`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/schedule.json`;
+  let sha;
+  try{const r=await fetch(path,{headers:ghHeaders(cfg)});if(r.ok){const f=await r.json();sha=f.sha}}catch(e){}
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
+  const body={message:`근무표 업데이트 (${new Date().toLocaleDateString('ko-KR')})`,content,...(sha?{sha}:{})};
+  const r=await fetch(path,{method:'PUT',headers:ghHeaders(cfg),body:JSON.stringify(body)});
+  if(r.ok){toast('GitHub에 자동 저장 완료! 🎉',3000)}
+  else{const err=await r.json();toast(`GitHub 저장 실패: ${err.message}`)}
+}
+
+/* ── 파일 로드 ── */
+async function loadFile(file){
+  if(!window.ExcelJS){toast('정밀 엑셀 모듈을 불러오지 못했습니다. 인터넷 연결을 확인해주세요.');return}
+  try{
+    const buf=await file.arrayBuffer();
+    data=await parseExcelJs(buf);
+    const monthCounts=data.reduce((a,x)=>{const m=parseKey(x.date).getMonth();a[m]=(a[m]||0)+1;return a},{}),mainMonth=Number(Object.entries(monthCounts).sort((a,b)=>b[1]-a[1])[0][0]),initial=data.find(x=>parseKey(x.date).getMonth()===mainMonth)||data[0];
+    selectedDate=parseKey(initial.date);baseDate=new Date(selectedDate);
+    saveToStorage(file.name);
+    document.getElementById('fileStatus').textContent=`${file.name} · ${data.length}일 분석 완료`;
+    showClearBtn(true);
+    closeDialog();render();
+    toast(`${data.length}일의 듀티를 변환했습니다.`);
+    // GitHub 자동 동기화
+    const cfg=ghConfig();
+    if(cfg.token&&cfg.user&&cfg.repo){
+      toast('GitHub에 동기화 중...', 2000);
+      ghSyncSchedule(cfg);
+    }
+  }catch(e){console.error(e);toast(`변환 실패: ${e.message}`)}
+}
+
+/* ── 다이얼로그 ── */
+const dialog=document.getElementById('uploadDialog'),zone=document.getElementById('dropZone');
+function closeDialog(){dialog.classList.remove('open')}
+document.getElementById('openUpload').onclick=()=>dialog.classList.add('open');
+document.getElementById('closeUpload').onclick=closeDialog;
+dialog.onclick=e=>{if(e.target===dialog)closeDialog()};
+document.getElementById('fileInput').onchange=e=>e.target.files[0]&&loadFile(e.target.files[0]);
+['dragenter','dragover'].forEach(ev=>zone.addEventListener(ev,e=>{e.preventDefault();zone.classList.add('drag')}));
+['dragleave','drop'].forEach(ev=>zone.addEventListener(ev,e=>{e.preventDefault();zone.classList.remove('drag')}));
+zone.addEventListener('drop',e=>e.dataTransfer.files[0]&&loadFile(e.dataTransfer.files[0]));
+
+/* ── GitHub 설정 다이얼로그 ── */
+const ghDialog=document.getElementById('ghDialog');
+function openGhDialog(){
+  const cfg=ghConfig();
+  document.getElementById('ghUser').value=cfg.user||'';
+  document.getElementById('ghRepo').value=cfg.repo||'';
+  document.getElementById('ghToken').value=cfg.token||'';
+  updateGhStatus(!!cfg.token);
+  ghDialog.classList.add('open');
+}
+function closeGhDialog(){ghDialog.classList.remove('open')}
+function updateGhStatus(ok){
+  const el=document.getElementById('ghStatusBadge');
+  el.className=`gh-status ${ok?'ok':'none'}`;
+  el.textContent=ok?'🟢 연결됨':'⚪ 미설정';
+  const btn=document.getElementById('ghBtn');
+  btn.className=`btn gh${ok?' active':''}`;
+  btn.textContent=ok?'🔔 알림 설정됨':'🔔 알림 설정';
+}
+document.getElementById('ghBtn').onclick=openGhDialog;
+document.getElementById('closeGh').onclick=closeGhDialog;
+ghDialog.onclick=e=>{if(e.target===ghDialog)closeGhDialog()};
+document.getElementById('saveGh').onclick=()=>{
+  const cfg={user:document.getElementById('ghUser').value.trim(),repo:document.getElementById('ghRepo').value.trim(),token:document.getElementById('ghToken').value.trim()};
+  if(!cfg.user||!cfg.repo||!cfg.token){toast('모든 항목을 입력해주세요.');return}
+  localStorage.setItem(GH_CONFIG_KEY,JSON.stringify(cfg));
+  updateGhStatus(true);
+  closeGhDialog();
+  toast('GitHub 설정 저장 완료!');
+};
+document.getElementById('testGh').onclick=async()=>{
+  const cfg={user:document.getElementById('ghUser').value.trim(),repo:document.getElementById('ghRepo').value.trim(),token:document.getElementById('ghToken').value.trim()};
+  if(!cfg.token){toast('Token을 먼저 입력해주세요.');return}
+  toast('연결 테스트 중...',2000);
+  try{
+    const r=await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}`,{headers:ghHeaders(cfg)});
+    if(r.ok){updateGhStatus(true);toast('연결 성공! 저장소를 찾았어요 ✅')}
+    else if(r.status===404){toast('저장소를 찾을 수 없어요. 사용자명/저장소명을 확인해주세요.')}
+    else{toast(`연결 실패 (${r.status}). Token 권한을 확인해주세요.`)}
+  }catch(e){toast('네트워크 오류. 인터넷 연결을 확인해주세요.')}
+};
+
+/* ── 네비게이션 ── */
+document.getElementById('demoBtn').onclick=()=>{baseDate=new Date(SCHEDULE_YEAR,6,2);selectedDate=new Date(baseDate);document.getElementById('fileStatus').textContent='샘플 데이터 표시 중';showClearBtn(false);demoData();toast('샘플 듀티표를 불러왔습니다.')};
+document.getElementById('prevMonth').onclick=()=>{baseDate.setMonth(baseDate.getMonth()-1);selectedDate=new Date(baseDate.getFullYear(),baseDate.getMonth(),1);render()};
+document.getElementById('nextMonth').onclick=()=>{baseDate.setMonth(baseDate.getMonth()+1);selectedDate=new Date(baseDate.getFullYear(),baseDate.getMonth(),1);render()};
+document.getElementById('prevDay').onclick=()=>shiftDay(-1);
+document.getElementById('nextDay').onclick=()=>shiftDay(1);
+document.getElementById('clearBtn').onclick=()=>{
+  if(!confirm('저장된 근무표를 초기화할까요?'))return;
+  localStorage.removeItem(STORAGE_KEY);showClearBtn(false);
+  baseDate=new Date(SCHEDULE_YEAR,6,2);selectedDate=new Date(SCHEDULE_YEAR,6,2);
+  document.getElementById('fileStatus').textContent='샘플 데이터 표시 중';
+  demoData();toast('저장된 데이터를 초기화했습니다.')
+};
+
+/* ── 서비스워커 ── */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+
+/* ── 초기 로드 ── */
+(function initLoad(){
+  try{
+    const saved=localStorage.getItem(STORAGE_KEY);
+    if(saved){
+      const parsed=JSON.parse(saved);
+      if(parsed.data&&parsed.data.length){
+        data=parsed.data;
+        const mc=data.reduce((a,x)=>{const m=parseKey(x.date).getMonth();a[m]=(a[m]||0)+1;return a},{});
+        const mm=Number(Object.entries(mc).sort((a,b)=>b[1]-a[1])[0][0]);
+        const init=data.find(x=>parseKey(x.date).getMonth()===mm)||data[0];
+        selectedDate=parseKey(init.date);baseDate=new Date(selectedDate);
+        document.getElementById('fileStatus').textContent=`${parsed.fileName||'저장된 데이터'} · 자동 복원됨`;
+        showClearBtn(true);
+        // GitHub 설정 상태 반영
+        updateGhStatus(!!ghConfig().token);
+        render();return;
+      }
+    }
+  }catch(e){}
+  updateGhStatus(!!ghConfig().token);
+  demoData();
+})();
+</script>
+</body>
+</html>
