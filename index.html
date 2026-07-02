@@ -343,25 +343,48 @@ if('serviceWorker' in navigator){
 }
 
 /* ── 초기 로드 ── */
-(function initLoad(){
+const GH_SCHEDULE_URL='https://raw.githubusercontent.com/heyrin-code/gwanak365-duty/master/schedule.json';
+
+function applyData(parsed,source){
+  data=parsed.data||parsed;
+  const mc=data.reduce((a,x)=>{const m=parseKey(x.date).getMonth();a[m]=(a[m]||0)+1;return a},{});
+  const mm=Number(Object.entries(mc).sort((a,b)=>b[1]-a[1])[0][0]);
+  const init=data.find(x=>parseKey(x.date).getMonth()===mm)||data[0];
+  selectedDate=parseKey(init.date);baseDate=new Date(selectedDate);
+  document.getElementById('fileStatus').textContent=source;
+  showClearBtn(true);
+  updateGhStatus(!!ghConfig().token);
+  render();
+}
+
+(async function initLoad(){
+  // 1순위: 이 기기 localStorage
   try{
     const saved=localStorage.getItem(STORAGE_KEY);
     if(saved){
       const parsed=JSON.parse(saved);
       if(parsed.data&&parsed.data.length){
-        data=parsed.data;
-        const mc=data.reduce((a,x)=>{const m=parseKey(x.date).getMonth();a[m]=(a[m]||0)+1;return a},{});
-        const mm=Number(Object.entries(mc).sort((a,b)=>b[1]-a[1])[0][0]);
-        const init=data.find(x=>parseKey(x.date).getMonth()===mm)||data[0];
-        selectedDate=parseKey(init.date);baseDate=new Date(selectedDate);
-        document.getElementById('fileStatus').textContent=`${parsed.fileName||'저장된 데이터'} · 자동 복원됨`;
-        showClearBtn(true);
-        // GitHub 설정 상태 반영
-        updateGhStatus(!!ghConfig().token);
-        render();return;
+        applyData(parsed,`${parsed.fileName||'저장된 데이터'} · 자동 복원됨`);
+        return;
       }
     }
   }catch(e){}
+
+  // 2순위: GitHub에 올라간 schedule.json
+  try{
+    document.getElementById('fileStatus').textContent='GitHub에서 불러오는 중...';
+    const res=await fetch(GH_SCHEDULE_URL+'?t='+Date.now());
+    if(res.ok){
+      const json=await res.json();
+      if(Array.isArray(json)&&json.length){
+        saveToStorage('schedule.json');
+        applyData({data:json},'GitHub 데이터 · 자동 복원됨');
+        return;
+      }
+    }
+  }catch(e){}
+
+  // 3순위: 샘플 데이터
   updateGhStatus(!!ghConfig().token);
   demoData();
 })();
