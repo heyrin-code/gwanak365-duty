@@ -57,16 +57,13 @@ function get(url) {
 
 function post(topic, title, body, tags) {
   return new Promise((resolve, reject) => {
-    const data = Buffer.from(body, 'utf8');
+    const payload = JSON.stringify({ topic, title, message: body, tags: tags.split(',') });
+    const data = Buffer.from(payload, 'utf8');
     const req = https.request({
-      hostname: 'ntfy.sh', port: 443, path: `/${topic}`, method: 'POST',
+      hostname: 'ntfy.sh', port: 443, path: '/', method: 'POST',
       headers: {
-        'Title': Buffer.from(title).toString('base64'),
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Content-Length': data.length,
-        'Tags': tags,
-        'Priority': 'default',
-        'X-Title': title
+        'Content-Type': 'application/json',
+        'Content-Length': data.length
       }
     }, res => resolve(res.statusCode));
     req.on('error', reject);
