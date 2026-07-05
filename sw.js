@@ -1,4 +1,4 @@
-const CACHE = 'gwanak365-v1';
+const CACHE = 'gwanak365-v3';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
