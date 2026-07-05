@@ -50,8 +50,9 @@
     .cal-cell.empty{cursor:default}
     .cal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
     .cal-dot.working{background:var(--coral)}
-    .cal-dot.vacation{background:#fb923c}
+    .cal-dot.vacation{background:var(--blue)}
     .cal-cell.today .cal-dot.working{background:#fff}
+    .cal-cell.today .cal-dot.vacation{background:#fff}
     @media(max-width:560px){.cal-section{padding:16px 12px 14px}.cal-cell{font-size:12px;min-height:40px;padding:5px 1px}.cal-dot{width:5px;height:5px}}
   </style>
 </head>
@@ -103,7 +104,7 @@
         <div class="cal-title" id="calTitle">7월 근무 현황</div>
         <div class="cal-legend">
           <span><span class="cal-dot working" style="display:inline-block"></span>출근</span>
-          <span><span class="cal-dot vacation" style="display:inline-block"></span>연차</span>
+          <span><span class="cal-dot vacation" style="display:inline-block;background:var(--blue)"></span>연차</span>
         </div>
       </div>
       <div class="cal-grid" id="calGrid"></div>
