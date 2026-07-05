@@ -54,6 +54,55 @@
     .cal-cell.today .cal-dot.working{background:#fff}
     .cal-cell.today .cal-dot.vacation{background:#fff}
     @media(max-width:560px){.cal-section{padding:16px 12px 14px}.cal-cell{font-size:12px;min-height:40px;padding:5px 1px}.cal-dot{width:5px;height:5px}}
+    /* ── 탭 네비게이션 ── */
+    .tab-nav{display:flex;background:#fff;border-bottom:2px solid var(--line);position:sticky;top:72px;z-index:15}
+    .tab-btn{flex:1;padding:13px 8px;border:none;background:none;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s}
+    .tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+    @media(max-width:900px){.tab-nav{top:64px}}
+    /* ── 업무관리 카드 ── */
+    .task-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 18px;margin-bottom:14px}
+    .task-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px}
+    .task-card-title{font-size:16px;font-weight:800;flex:1;min-width:0}
+    .btn.alarm-set{border-color:#22c55e;color:#16a34a;font-size:12px;padding:7px 11px;flex-shrink:0}
+    .btn.alarm-unset{border-color:var(--line);color:var(--muted);font-size:12px;padding:7px 11px;flex-shrink:0}
+    .task-memo{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;resize:vertical;min-height:56px;outline:none;font-family:inherit;color:var(--ink)}
+    .task-memo:focus{border-color:var(--blue)}
+    .task-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+    .task-item{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fafcff}
+    .task-item.done .task-item-text{text-decoration:line-through;color:var(--muted)}
+    .task-item-text{flex:1;font-size:14px;font-weight:500;word-break:break-all}
+    .task-item-alarm{font-size:11px;border:none;border-radius:6px;padding:4px 8px;cursor:pointer;white-space:nowrap;flex-shrink:0;font-weight:700}
+    .task-item-alarm.unset{background:#f1f5f9;color:var(--muted)}.task-item-alarm.isset{background:#dcfce7;color:#16a34a}
+    .task-item-del{font-size:18px;color:#cbd5e1;border:none;background:none;cursor:pointer;flex-shrink:0;line-height:1;padding:0 4px}
+    .task-item-del:hover{color:var(--coral)}
+    .task-add-row{display:flex;gap:8px;margin-top:10px}
+    .task-add-input{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;outline:none;font-family:inherit}
+    .task-add-input:focus{border-color:var(--blue)}
+    .task-add-btn{border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:10px;padding:10px 18px;font-weight:700;font-size:22px;line-height:1;flex-shrink:0}
+    /* ── 소형 달력 (업무) ── */
+    .tcal-section{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 18px;margin-bottom:14px}
+    .tcal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .tcal-month{font-size:16px;font-weight:800}.tcal-nav{display:flex;gap:6px}
+    .tcal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+    .tcal-label{text-align:center;font-size:11px;font-weight:700;color:var(--muted);padding:3px 0 7px}
+    .tcal-label.sun{color:var(--coral)}.tcal-label.sat{color:#1672dd}
+    .tcal-cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:.12s}
+    .tcal-cell:hover:not(.empty){background:#f0f7ff}.tcal-cell.empty{cursor:default}
+    .tcal-cell.today{background:var(--blue);color:#fff!important;box-shadow:0 3px 10px rgba(9,105,232,.2)}
+    .tcal-cell.selected:not(.today){outline:2px solid var(--blue);outline-offset:-2px}
+    .tcal-cell.sun{color:var(--coral)}.tcal-cell.sat{color:#1672dd}
+    .tcal-dot{width:5px;height:5px;border-radius:50%;background:var(--coral)}.tcal-cell.today .tcal-dot{background:#fff}
+    /* ── 주별 직장 ── */
+    .task-week-row{display:grid;grid-template-columns:46px 1fr;gap:10px;align-items:center;margin-bottom:6px}
+    .task-week-day-label{font-size:11px;font-weight:800;text-align:center;padding:7px 3px;border-radius:8px;background:#f7fbff;color:var(--muted);line-height:1.4}
+    .task-week-day-label.is-today{background:var(--blue);color:#fff!important}
+    .task-week-day-label.sat{color:#1672dd}.task-week-day-label.sun{color:var(--coral)}
+    .task-week-input{border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:13px;width:100%;outline:none;font-family:inherit}
+    .task-week-input:focus{border-color:var(--blue)}
+    /* ── 시간 다이얼로그 ── */
+    .time-dialog{max-width:300px;text-align:center}.time-dialog h2{font-size:18px;margin:0 0 4px}
+    .time-input{font-size:28px;padding:12px;border:1.5px solid var(--line);border-radius:12px;width:100%;text-align:center;outline:none;font-family:inherit;margin-top:16px}
+    .time-input:focus{border-color:var(--blue)}
   </style>
 </head>
 <body>
@@ -66,7 +115,11 @@
       <button class="btn primary" id="openUpload">⇧ 엑셀 업로드</button>
     </div>
   </header>
-  <main class="main">
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="schedule">📋 근무표</button>
+    <button class="tab-btn" data-tab="task">📝 업무관리</button>
+  </nav>
+  <main class="main" id="schedulePage">
     <div class="toolbar">
       <div class="month-nav">
         <button class="btn icon" id="prevMonth" aria-label="이전 달">‹</button>
@@ -112,6 +165,53 @@
     <div class="info">ⓘ 엑셀 파일을 업로드하면 날짜·직군·이름과 행 구조를 분석해 근무표로 변환합니다. 업로드한 데이터는 이 기기에 자동 저장되어 다음에 열어도 유지됩니다. GitHub 알림 설정 시 엑셀 업로드마다 GitHub에도 자동 동기화됩니다.</div>
     <footer class="footer">© Created by Heyrin</footer>
   </main>
+
+  <!-- 업무관리 페이지 -->
+  <main class="main" id="taskPage" style="display:none">
+    <section class="tcal-section">
+      <div class="tcal-top">
+        <div class="tcal-month" id="tcalMonth">7월</div>
+        <div class="tcal-nav">
+          <button class="btn icon" id="tcalPrev">‹</button>
+          <button class="btn icon" id="tcalNext">›</button>
+        </div>
+      </div>
+      <div class="tcal-grid" id="tcalGrid"></div>
+    </section>
+    <section class="task-card">
+      <div class="task-card-head">
+        <div class="task-card-title" id="taskDayTitle">날짜 선택</div>
+        <button class="btn alarm-unset" id="taskDayAlarm">⏰ 일별 알람</button>
+      </div>
+      <textarea class="task-memo" id="taskMemo" placeholder="메모를 입력하세요..."></textarea>
+      <div class="task-list" id="taskList"></div>
+      <div class="task-add-row">
+        <input class="task-add-input" id="taskAddInput" type="text" placeholder="할 일 추가...">
+        <button class="task-add-btn" id="taskAddBtn">+</button>
+      </div>
+    </section>
+    <section class="task-card">
+      <div class="task-card-head">
+        <div class="task-card-title">이번 주 직장 / 일정</div>
+      </div>
+      <div id="taskWeekGrid"></div>
+    </section>
+    <footer class="footer">© Created by Heyrin</footer>
+  </main>
+</div>
+
+<!-- 시간 알람 설정 다이얼로그 -->
+<div class="drop" id="timeDialog">
+  <div class="dialog time-dialog">
+    <h2>⏰ 알람 설정</h2>
+    <p id="timeDialogDesc">알람 시간을 선택하세요</p>
+    <input class="time-input" id="timeInput" type="time">
+    <div class="dialog-actions" style="margin-top:18px">
+      <button class="btn" id="clearTimeBtn">알람 삭제</button>
+      <button class="btn" id="closeTimeBtn">취소</button>
+      <button class="btn primary" id="confirmTimeBtn">설정</button>
+    </div>
+  </div>
 </div>
 
 <!-- 엑셀 업로드 다이얼로그 -->
@@ -409,6 +509,148 @@ function renderCalendar(){
     el.onclick=()=>{selectedDate=parseKey(el.dataset.date);baseDate=new Date(selectedDate);render()};
   });
 }
+
+/* ── 업무관리 ── */
+const TASK_KEY='gwanak365_tasks_v1';
+const GH_TASKS_URL='https://raw.githubusercontent.com/heyrin-code/gwanak365-duty/master/tasks.json';
+let tasks={};
+let tDate=new Date(),tBase=new Date();
+let _timeCb=null;
+
+function getTask(d){const k=key(d);if(!tasks[k])tasks[k]={memo:'',items:[],dayAlarm:'',workplace:''};return tasks[k]}
+function saveTaskLocal(){try{localStorage.setItem(TASK_KEY,JSON.stringify(tasks))}catch(e){}}
+function loadTaskLocal(){try{const s=localStorage.getItem(TASK_KEY);if(s){tasks=JSON.parse(s);return true}}catch(e){}return false}
+
+async function syncTasks(){
+  const cfg=ghConfig();if(!cfg.token||!cfg.user||!cfg.repo)return;
+  const path=`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/tasks.json`;
+  let sha;try{const r=await fetch(path,{headers:ghHeaders(cfg)});if(r.ok)sha=(await r.json()).sha}catch(e){}
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify(tasks,null,2))));
+  const body={message:'업무 업데이트',content,...(sha?{sha}:{})};
+  await fetch(path,{method:'PUT',headers:ghHeaders(cfg),body:JSON.stringify(body)});
+}
+async function loadTasksFromGH(){
+  try{const r=await fetch(GH_TASKS_URL+'?t='+Date.now());
+    if(r.ok){const j=await r.json();if(j&&typeof j==='object'&&!Array.isArray(j)){tasks=j;saveTaskLocal();return true}}}catch(e){}return false
+}
+
+function renderTaskPage(){renderTCal();renderTaskDay();renderTaskWeek()}
+
+function renderTCal(){
+  const year=tBase.getFullYear(),month=tBase.getMonth();
+  document.getElementById('tcalMonth').textContent=`${year}년 ${month+1}월`;
+  const firstDow=new Date(year,month,1).getDay(),daysInMonth=new Date(year,month+1,0).getDate();
+  const todayKey=key(new Date()),selKey=key(tDate);
+  const lbls=['일','월','화','수','목','금','토'];
+  let html=lbls.map((l,i)=>`<div class="tcal-label ${i===0?'sun':i===6?'sat':''}">${l}</div>`).join('');
+  for(let i=0;i<firstDow;i++)html+='<div class="tcal-cell empty"></div>';
+  for(let d=1;d<=daysInMonth;d++){
+    const date=new Date(year,month,d),dk=key(date),dow=date.getDay();
+    const t=tasks[dk],hasTask=t&&(t.items?.some(i=>!i.done)||t.memo||t.workplace);
+    let cls='tcal-cell';
+    if(dow===0)cls+=' sun';if(dow===6)cls+=' sat';
+    if(dk===todayKey)cls+=' today';else if(dk===selKey)cls+=' selected';
+    html+=`<div class="${cls}" data-date="${dk}">${d}${hasTask?'<div class="tcal-dot"></div>':''}</div>`;
+  }
+  const grid=document.getElementById('tcalGrid');
+  grid.innerHTML=html;
+  grid.querySelectorAll('.tcal-cell[data-date]').forEach(el=>{
+    el.onclick=()=>{tDate=parseKey(el.dataset.date);tBase=new Date(tDate);renderTaskPage()};
+  });
+}
+
+function renderTaskDay(){
+  const t=getTask(tDate);
+  const dayNames=['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+  document.getElementById('taskDayTitle').textContent=`${fmt(tDate)} ${dayNames[tDate.getDay()]}`;
+  const ab=document.getElementById('taskDayAlarm');
+  ab.textContent=t.dayAlarm?`⏰ ${t.dayAlarm}`:'⏰ 일별 알람';
+  ab.className=`btn ${t.dayAlarm?'alarm-set':'alarm-unset'}`;
+  document.getElementById('taskMemo').value=t.memo||'';
+  const list=document.getElementById('taskList');
+  list.innerHTML=(t.items||[]).map((item,idx)=>`
+    <div class="task-item${item.done?' done':''}" data-idx="${idx}">
+      <input type="checkbox" class="task-check" style="width:18px;height:18px;accent-color:var(--blue);cursor:pointer;flex-shrink:0" ${item.done?'checked':''}>
+      <span class="task-item-text">${escapeHtml(item.text)}</span>
+      <button class="task-item-alarm ${item.alarm?'isset':'unset'}" data-alarm="${item.alarm||''}">${item.alarm?`⏰ ${item.alarm}`:'⏰'}</button>
+      <button class="task-item-del">×</button>
+    </div>`).join('');
+  list.querySelectorAll('.task-check').forEach((cb,i)=>{
+    cb.onchange=()=>{const t2=getTask(tDate);t2.items[i].done=cb.checked;saveTaskLocal();renderTaskDay();renderTCal();syncTasks()};
+  });
+  list.querySelectorAll('.task-item-del').forEach((btn,i)=>{
+    btn.onclick=()=>{const t2=getTask(tDate);t2.items.splice(i,1);saveTaskLocal();renderTaskDay();renderTCal();syncTasks()};
+  });
+  list.querySelectorAll('.task-item-alarm').forEach((btn,i)=>{
+    btn.onclick=()=>openTimePicker('할 일 알람 시간',btn.dataset.alarm,time=>{const t2=getTask(tDate);t2.items[i].alarm=time;saveTaskLocal();renderTaskDay();syncTasks()});
+  });
+}
+
+function renderTaskWeek(){
+  const start=new Date(tDate);start.setDate(start.getDate()-((start.getDay()+6)%7));
+  const lbls=['월','화','수','목','금','토','일'];
+  const todayKey=key(new Date());
+  let html='';
+  for(let i=0;i<7;i++){
+    const d=new Date(start);d.setDate(d.getDate()+i);
+    const dk=key(d),isTd=dk===todayKey,isSat=i===5,isSun=i===6;
+    let lcls='task-week-day-label';
+    if(isTd)lcls+=' is-today';else if(isSat)lcls+=' sat';else if(isSun)lcls+=' sun';
+    const wp=tasks[dk]?.workplace||'';
+    html+=`<div class="task-week-row">
+      <div class="${lcls}">${lbls[i]}<br><span style="font-size:10px;font-weight:500">${d.getMonth()+1}/${d.getDate()}</span></div>
+      <input class="task-week-input" type="text" placeholder="직장/일정" value="${escapeHtml(wp)}" data-date="${dk}">
+    </div>`;
+  }
+  document.getElementById('taskWeekGrid').innerHTML=html;
+  document.querySelectorAll('.task-week-input').forEach(inp=>{
+    inp.onchange=()=>{if(!tasks[inp.dataset.date])tasks[inp.dataset.date]={memo:'',items:[],dayAlarm:'',workplace:''};tasks[inp.dataset.date].workplace=inp.value;saveTaskLocal();syncTasks()};
+  });
+}
+
+/* 시간 피커 */
+const timeDialog=document.getElementById('timeDialog');
+function openTimePicker(desc,current,cb){
+  document.getElementById('timeDialogDesc').textContent=desc;
+  document.getElementById('timeInput').value=current||'';
+  _timeCb=cb;timeDialog.classList.add('open');
+  setTimeout(()=>document.getElementById('timeInput').focus(),100);
+}
+document.getElementById('closeTimeBtn').onclick=()=>timeDialog.classList.remove('open');
+document.getElementById('clearTimeBtn').onclick=()=>{if(_timeCb)_timeCb('');timeDialog.classList.remove('open')};
+document.getElementById('confirmTimeBtn').onclick=()=>{if(_timeCb)_timeCb(document.getElementById('timeInput').value);timeDialog.classList.remove('open')};
+timeDialog.onclick=e=>{if(e.target===timeDialog)timeDialog.classList.remove('open')};
+
+/* 업무 이벤트 */
+document.getElementById('taskDayAlarm').onclick=()=>{
+  const t=getTask(tDate);openTimePicker('일별 업무 알람',t.dayAlarm,time=>{t.dayAlarm=time;saveTaskLocal();renderTaskDay();syncTasks()});
+};
+document.getElementById('taskMemo').oninput=()=>{const t=getTask(tDate);t.memo=document.getElementById('taskMemo').value;saveTaskLocal()};
+document.getElementById('taskMemo').onblur=()=>syncTasks();
+document.getElementById('taskAddInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('taskAddBtn').click()});
+document.getElementById('taskAddBtn').onclick=()=>{
+  const inp=document.getElementById('taskAddInput'),text=inp.value.trim();if(!text)return;
+  const t=getTask(tDate);t.items=t.items||[];t.items.push({id:Date.now(),text,done:false,alarm:''});
+  saveTaskLocal();inp.value='';renderTaskDay();renderTCal();syncTasks();
+};
+
+/* 탭 전환 */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const isTask=btn.dataset.tab==='task';
+    document.getElementById('schedulePage').style.display=isTask?'none':'block';
+    document.getElementById('taskPage').style.display=isTask?'block':'none';
+    if(isTask)renderTaskPage();
+  };
+});
+document.getElementById('tcalPrev').onclick=()=>{tBase.setMonth(tBase.getMonth()-1);renderTCal()};
+document.getElementById('tcalNext').onclick=()=>{tBase.setMonth(tBase.getMonth()+1);renderTCal()};
+
+/* 업무 데이터 초기 로드 */
+loadTaskLocal();
+loadTasksFromGH().then(ok=>{if(ok&&document.getElementById('taskPage').style.display!=='none')renderTaskPage()});
 
 /* ── 서비스워커 ── */
 if('serviceWorker' in navigator){
