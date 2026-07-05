@@ -33,6 +33,26 @@
     .btn.gh{border-color:#22c55e;color:#16a34a;font-size:13px;padding:8px 12px}.btn.gh:hover{background:#f0fdf4}.btn.gh.active{background:#16a34a;border-color:#16a34a;color:#fff}
     /* 비밀번호 다이얼로그 */
     .pw-dialog{max-width:320px;text-align:center}.pw-dialog h2{font-size:19px;margin-bottom:4px}.pw-dialog p{margin:6px 0 20px}.pw-input{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:14px;font-size:22px;text-align:center;letter-spacing:6px;outline:none;transition:.2s}.pw-input:focus{border-color:var(--blue)}.pw-error{color:var(--coral);font-size:13px;margin-top:8px;min-height:18px}
+    /* 월별 달력 */
+    .cal-section{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 20px 18px}
+    .cal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .cal-title{font-size:16px;font-weight:800}
+    .cal-legend{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted);font-weight:600}
+    .cal-legend span{display:flex;align-items:center;gap:4px}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+    .cal-label{text-align:center;font-size:12px;font-weight:700;color:var(--muted);padding:4px 0 8px}
+    .cal-label.sun{color:var(--coral)}.cal-label.sat{color:#1672dd}
+    .cal-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:7px 2px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;min-height:46px;transition:.15s}
+    .cal-cell:hover:not(.empty){background:#f0f7ff}
+    .cal-cell.sun{color:var(--coral)}.cal-cell.sat{color:#1672dd}
+    .cal-cell.today{background:var(--blue);color:#fff!important;box-shadow:0 3px 10px rgba(9,105,232,.25)}
+    .cal-cell.selected:not(.today){outline:2px solid var(--blue);outline-offset:-2px}
+    .cal-cell.empty{cursor:default}
+    .cal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .cal-dot.working{background:var(--coral)}
+    .cal-dot.vacation{background:#fb923c}
+    .cal-cell.today .cal-dot.working{background:#fff}
+    @media(max-width:560px){.cal-section{padding:16px 12px 14px}.cal-cell{font-size:12px;min-height:40px;padding:5px 1px}.cal-dot{width:5px;height:5px}}
   </style>
 </head>
 <body>
@@ -77,6 +97,16 @@
       </div>
       <div class="week-head" id="weekHead"></div>
       <div class="week-grid" id="weekGrid"></div>
+    </section>
+    <section class="cal-section">
+      <div class="cal-top">
+        <div class="cal-title" id="calTitle">7월 근무 현황</div>
+        <div class="cal-legend">
+          <span><span class="cal-dot working" style="display:inline-block"></span>출근</span>
+          <span><span class="cal-dot vacation" style="display:inline-block"></span>연차</span>
+        </div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
     </section>
     <div class="info">ⓘ 엑셀 파일을 업로드하면 날짜·직군·이름과 행 구조를 분석해 근무표로 변환합니다. 업로드한 데이터는 이 기기에 자동 저장되어 다음에 열어도 유지됩니다. GitHub 알림 설정 시 엑셀 업로드마다 GitHub에도 자동 동기화됩니다.</div>
     <footer class="footer">© Created by Heyrin</footer>
@@ -165,7 +195,7 @@ function recordFor(d){return data.find(x=>x.date===key(d))||{date:key(d),roles:O
 function roleLabel(role){return role}
 function fmt(d){return `${d.getMonth()+1}월 ${d.getDate()}일`}
 function weekday(d){return ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'][d.getDay()]}
-function render(){document.getElementById('monthTitle').textContent=`${baseDate.getFullYear()}년 ${baseDate.getMonth()+1}월`;const rec=recordFor(selectedDate);document.getElementById('todayTitle').innerHTML=`오늘, <strong>${fmt(selectedDate)}</strong> ${weekday(selectedDate)}`;document.getElementById('counts').innerHTML=ROLES.map(r=>{const count=r==='진료팀'&&rec.counts?.진료팀!=null?rec.counts.진료팀:(rec.roles[r]?.length||0);return `<div class="count"><div class="count-label">${roleLabel(r)}</div><strong>${count}<span>명</span>${r==='진료팀'&&rec.notes?.진료팀?`<span class="count-note">(${escapeHtml(rec.notes.진료팀)})</span>`:''}</strong><div class="count-people">${people(rec.roles[r])||'<span class="empty">근무자 없음</span>'}</div></div>`}).join('');document.getElementById('rosters').innerHTML='';renderWeek()}
+function render(){document.getElementById('monthTitle').textContent=`${baseDate.getFullYear()}년 ${baseDate.getMonth()+1}월`;const rec=recordFor(selectedDate);document.getElementById('todayTitle').innerHTML=`오늘, <strong>${fmt(selectedDate)}</strong> ${weekday(selectedDate)}`;document.getElementById('counts').innerHTML=ROLES.map(r=>{const count=r==='진료팀'&&rec.counts?.진료팀!=null?rec.counts.진료팀:(rec.roles[r]?.length||0);return `<div class="count"><div class="count-label">${roleLabel(r)}</div><strong>${count}<span>명</span>${r==='진료팀'&&rec.notes?.진료팀?`<span class="count-note">(${escapeHtml(rec.notes.진료팀)})</span>`:''}</strong><div class="count-people">${people(rec.roles[r])||'<span class="empty">근무자 없음</span>'}</div></div>`}).join('');document.getElementById('rosters').innerHTML='';renderWeek();renderCalendar()}
 function displayName(name){return String(name).replace(/^아영(?=\s*\(|$)/,'김아영')}
 function staffRank(name){const base=displayName(name).replace(/\s*[（(].*$/,'');const i=STAFF_ORDER.indexOf(base);return i<0?999:i}
 function people(list=[]){return [...list].sort((a,b)=>staffRank(a)-staffRank(b)).map(n=>`<span class="person">${escapeHtml(displayName(n))}</span>`).join('')}
@@ -336,6 +366,48 @@ document.getElementById('clearBtn').onclick=()=>{
   document.getElementById('fileStatus').textContent='샘플 데이터 표시 중';
   demoData();toast('저장된 데이터를 초기화했습니다.')
 };
+
+/* ── 월별 달력 ── */
+const CAL_TARGET='장혜린';
+function getTargetStatus(dateKey){
+  const rec=data.find(x=>x.date===dateKey);
+  if(!rec)return null;
+  for(const [role,names] of Object.entries(rec.roles)){
+    if(names.some(n=>n.includes(CAL_TARGET)||CAL_TARGET.includes(n.replace(/\s*[\(（].*$/,'')))){
+      return role==='연차'?'vacation':'working';
+    }
+  }
+  return 'off';
+}
+function renderCalendar(){
+  const year=baseDate.getFullYear(),month=baseDate.getMonth();
+  document.getElementById('calTitle').textContent=`${month+1}월 장혜린 근무 현황`;
+  const firstDow=new Date(year,month,1).getDay();
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const todayKey=key(new Date());
+  const selKey=key(selectedDate);
+  const labels=['일','월','화','수','목','금','토'];
+  let html=labels.map((l,i)=>`<div class="cal-label ${i===0?'sun':i===6?'sat':''}">${l}</div>`).join('');
+  for(let i=0;i<firstDow;i++) html+=`<div class="cal-cell empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const date=new Date(year,month,d);
+    const dk=key(date);
+    const dow=date.getDay();
+    const status=getTargetStatus(dk);
+    let cls='cal-cell';
+    if(dow===0)cls+=' sun';
+    if(dow===6)cls+=' sat';
+    if(dk===todayKey)cls+=' today';
+    else if(dk===selKey)cls+=' selected';
+    const dot=status==='working'?'<div class="cal-dot working"></div>':status==='vacation'?'<div class="cal-dot vacation"></div>':'';
+    html+=`<div class="${cls}" data-date="${dk}">${d}${dot}</div>`;
+  }
+  const grid=document.getElementById('calGrid');
+  grid.innerHTML=html;
+  grid.querySelectorAll('.cal-cell[data-date]').forEach(el=>{
+    el.onclick=()=>{selectedDate=parseKey(el.dataset.date);baseDate=new Date(selectedDate);render()};
+  });
+}
 
 /* ── 서비스워커 ── */
 if('serviceWorker' in navigator){
