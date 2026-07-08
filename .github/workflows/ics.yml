@@ -1,0 +1,30 @@
+name: 캘린더(.ics) 생성
+
+on:
+  push:
+    paths:
+      - 'schedule.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-ics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: calendar.ics 생성
+        env:
+          TARGET_NAME: ${{ secrets.TARGET_NAME }}
+        run: node generate-ics.js
+
+      - name: 커밋 & 푸시
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add calendar.ics
+          git diff --cached --quiet && echo "변경 없음" || git commit -m "calendar.ics 자동 갱신"
+          git push
